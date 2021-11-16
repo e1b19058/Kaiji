@@ -35,3 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+###サーバー起動###
+errors.txt
+log.txt
+pid.txt
