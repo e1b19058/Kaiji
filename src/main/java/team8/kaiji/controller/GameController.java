@@ -18,9 +18,13 @@ import team8.kaiji.model.Room;
 public class GameController {
   @Autowired
   private Room room;
+  @Autowired
+  private UserMapper userMapper;
   @GetMapping("step1")
   public String step1() {
-    return "room.html";
+    ArrayList<User> user = userMapper.selectAllUser();
+    model.addAttribute("user", user);
+    return "main.html";
   }
 
   @GetMapping("step2")
@@ -29,6 +33,6 @@ public class GameController {
     this.room.addUser(loginUser);
     model.addAttribute("room", this.room);
 
-    return "room.html";
+    return "main.html";
   }
 }
