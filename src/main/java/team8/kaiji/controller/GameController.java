@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,8 +27,8 @@ public class GameController {
   private UserMapper userMapper;
 
   @GetMapping("step1")
-  public String step1(ModelMap model,Principal prin) {
-    User userlist=new User();
+  public String step1(ModelMap model, Principal prin) {
+    User userlist = new User();
     userlist.setName(prin.getName());
     userMapper.insertUser(userlist);
     ArrayList<User> user = userMapper.selectAllUser();
@@ -43,4 +44,18 @@ public class GameController {
 
     return "main.html";
   }
+
+  @GetMapping("match")
+  public String battle(Principal prin, ModelMap model, @RequestParam Integer id) {
+    String username = userMapper.selectNameById(id);
+    model.addAttribute("enemyname", username);
+    return "match.html";
+  }
+
+  /*
+   * @GetMapping("janken/{hand}") public String janken(ModelMap
+   * model, @PathVariable hand){
+   *
+   * }
+   */
 }
