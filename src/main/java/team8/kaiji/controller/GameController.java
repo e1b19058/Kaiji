@@ -46,7 +46,8 @@ public class GameController {
   }
 
   @GetMapping("match")
-  public String battle(Principal prin, ModelMap model, @RequestParam Integer id) {
+  public String match(Principal prin, ModelMap model, @RequestParam Integer id) {
+    System.out.println("hello");
     String username = userMapper.selectNameById(id);
     model.addAttribute("enemyname", username);
     return "match.html";

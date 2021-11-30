@@ -11,7 +11,7 @@
 </body>
 
 <ul>
-  <li th:each="user : ${user}"><a href="@{/game/match(id=${user.id})}">[[${user.name}]]</a></li>
+  <li th:each="user : ${user}"><a th:href="@{/game/match(id=${user.id})}">[[${user.name}]]</a></li>
 
 </ul>
 
