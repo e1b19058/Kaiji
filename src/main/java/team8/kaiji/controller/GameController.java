@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import team8.kaiji.model.Room;
 import team8.kaiji.model.User;
 import team8.kaiji.model.UserMapper;
+import team8.kaiji.model.Match;
+import team8.kaiji.model.MatchMapper;
 
 @Controller
 @RequestMapping("/game")
@@ -25,6 +27,9 @@ public class GameController {
 
   @Autowired
   private UserMapper userMapper;
+
+  @Autowired
+  private MatchMapper matchMapper;
 
   @GetMapping("step1")
   public String step1(ModelMap model, Principal prin) {
@@ -47,16 +52,19 @@ public class GameController {
 
   @GetMapping("match")
   public String match(Principal prin, ModelMap model, @RequestParam Integer id) {
-    System.out.println("hello");
     String username = userMapper.selectNameById(id);
     model.addAttribute("enemyname", username);
+    model.addAttribute("enemyid", id);
     return "match.html";
   }
 
-  /*
-   * @GetMapping("janken/{hand}") public String janken(ModelMap
-   * model, @PathVariable hand){
-   *
-   * }
-   */
+  @GetMapping("janken/{hand}")
+  public String janken(ModelMap model, Principal prin, @RequestParam int id, @PathVariable String hand) {
+    Match match = new Match();
+    match.setUser1hand(hand);
+    match.setUser1id(prin.getId());
+    match.setUser2id(id);
+    matchMapper.insertMatchPlayer1(match);
+    return "match.html";
+  }
 }
