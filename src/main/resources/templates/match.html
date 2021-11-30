@@ -3,16 +3,21 @@
 
 <head>
   <meta charset="utf-8">
-  <title>janken</title>
+  <title>matchjanken</title>
 </head>
 
 <body>
   <div><a href="/logout">ログアウト</a></div>
+
+  <h1>
+    <a th:each="user : ${user}"> VS ${user.name}</a>
+  </h1>
+
+  <div>
+    <a href="match/gu">グー</a>
+    <a href="match/cho">チョキ</a>
+    <a href="match/pa">パー</a>
+  </div>
 </body>
-
-<ul>
-  <li th:each="user : ${user}"><a href="@{/game/match(id=${user.id})}">[[${user.name}]]</a></li>
-
-</ul>
 
 </html>
