@@ -34,5 +34,8 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
     http.authorizeRequests().antMatchers("/game/**").authenticated();
 
     http.logout().logoutSuccessUrl("/");
+
+    http.csrf().disable();
+    http.headers().frameOptions().disable();
   }
 }

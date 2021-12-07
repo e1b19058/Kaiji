@@ -14,9 +14,9 @@
   </h1>
 
   <div>
-    <a href="match/gu">グー</a>
-    <a href="match/cho">チョキ</a>
-    <a href="match/pa">パー</a>
+    <a th:href="@{/game/janken/gu(id=${enemyid})}">グー</a>
+    <a th:href="@{/game/janken/cho(id=${enemyid})}">チョキ</a>
+    <a th:href="@{/game/janken/pa(id=${enemyid})}">パー</a>
   </div>
 </body>
 
