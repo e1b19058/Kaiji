@@ -23,13 +23,13 @@ import team8.kaiji.model.MatchMapper;
 public class GameController {
 
   @Autowired
-  private Room room;
+  public Room room;
 
   @Autowired
-  private UserMapper userMapper;
+  public UserMapper userMapper;
 
   @Autowired
-  private MatchMapper matchMapper;
+  public MatchMapper matchMapper;
 
   @GetMapping("step1")
   public String step1(ModelMap model, Principal prin) {
@@ -62,7 +62,7 @@ public class GameController {
   public String janken(ModelMap model, Principal prin, @RequestParam int id, @PathVariable String hand) {
     Match match = new Match();
     match.setUser1hand(hand);
-    match.setUser1id(prin.getId());
+    match.setUser1id(userMapper.selectIdByName(prin.getName()));
     match.setUser2id(id);
     matchMapper.insertMatchPlayer1(match);
     return "match.html";
