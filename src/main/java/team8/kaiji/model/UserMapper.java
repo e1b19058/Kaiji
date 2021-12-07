@@ -20,6 +20,9 @@ public interface UserMapper {
   @Select("select name from users where id = #{id};")
   String selectNameById(int id);
 
+  @Select("select name from users")
+  ArrayList<String> selectAllUserName();
+
   @Select("select id from users where name=#{name};")
   int selectIdByName(String name);
 }
