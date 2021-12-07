@@ -28,9 +28,18 @@ public class GameController {
 
   @GetMapping("step1")
   public String step1(ModelMap model, Principal prin) {
+    int cnt = 0;
     User userlist = new User();
-    userlist.setName(prin.getName());
-    userMapper.insertUser(userlist);
+    ArrayList<String> namelist = userMapper.selectAllUserName();
+    for (String username : namelist) {
+      if (prin.getName() == username) {
+        cnt++;
+      }
+    }
+    if (cnt == 0) {
+      userlist.setName(prin.getName());
+      userMapper.insertUser(userlist);
+    }
     ArrayList<User> user = userMapper.selectAllUser();
     model.addAttribute("user", user);
     return "main.html";
