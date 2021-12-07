@@ -47,7 +47,10 @@ public class GameController {
     }
     ArrayList<User> user = userMapper.selectAllUser();
     model.addAttribute("user", user);
+
+    ArrayList<Match> match = matchMappar.selectAllMatch();
     return "main.html";
+
   }
 
   @GetMapping("step2")

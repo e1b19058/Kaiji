@@ -15,4 +15,15 @@
 
 </ul>
 
+<H2>対戦待ち</H2>
+
+<ul>
+  <li th:each="match : ${match_wait}">
+    <a th:href="/game/matchwait">
+      [[${match.user1name}]]
+    </a>
+  </li>
+
+</ul>
+
 </html>
