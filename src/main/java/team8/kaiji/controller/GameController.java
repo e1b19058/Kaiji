@@ -52,7 +52,7 @@ public class GameController {
     ArrayList<Integer> match = matchMapper.selectMatchIdByUserid(user2id);
 
     model.addAttribute("match_wait", match);
-   
+
     return "main.html";
 
   }
@@ -82,5 +82,11 @@ public class GameController {
     match.setUser2id(id);
     matchMapper.insertMatchPlayer1(match);
     return "match.html";
+  }
+
+  @GetMapping("matchwait")
+  public String matchwait(ModelMap model, @RequestParam int id) {
+    model.addAttribute("match", id);
+    return "wait.html";
   }
 }

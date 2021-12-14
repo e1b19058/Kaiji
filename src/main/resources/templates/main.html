@@ -19,7 +19,9 @@
 
 <ul>
   <li th:each="match : ${match_wait}">
-    [[${match}]]
+    <a th:href="@{/game/matchwait(id=${match})}">
+      matchNo:[[${match}]]
+    </a>
   </li>
 
 </ul>
