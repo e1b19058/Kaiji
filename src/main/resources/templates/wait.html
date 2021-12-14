@@ -8,8 +8,17 @@
 
 <body>
   <div><a href="/logout">ログアウト</a></div>
-</body>
+  <div><a href="/game/step1">戻る</a></div>
 
-<div>[[${match}]]<div>
+  <h1>
+    <a> VS [[${enemyname}]]</a>
+  </h1>
+
+  <div>
+    <a th:href="@{/game/janken2/gu(id=${matchid})}">グー</a>
+    <a th:href="@{/game/janken2/cho(id=${matchid})}">チョキ</a>
+    <a th:href="@{/game/janken2/pa(id=${matchid})}">パー</a>
+  </div>
+</body>
 
 </html>

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface MatchMapper {
@@ -18,4 +19,7 @@ public interface MatchMapper {
 
   @Select("select matchid from match where user2id = #{user2id};")
   ArrayList<Integer> selectMatchIdByUserid(int user2id);
+
+  @Update("Update Match set user2hand=#{user2hand} where matchid = #{matchid} ")
+  void updateUser2Hand(Match match);
 }
