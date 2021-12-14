@@ -51,9 +51,8 @@ public class GameController {
     int user2id = userMapper.selectIdByName(prin.getName());
     ArrayList<Integer> match = matchMapper.selectMatchIdByUserid(user2id);
 
-    for (int matchid : match) {
-      model.addAttribute("match_wait", matchid);
-    }
+    model.addAttribute("match_wait", match);
+   
     return "main.html";
 
   }
