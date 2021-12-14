@@ -86,7 +86,16 @@ public class GameController {
 
   @GetMapping("matchwait")
   public String matchwait(ModelMap model, @RequestParam int id) {
-    model.addAttribute("match", id);
+    model.addAttribute("matchid", id);
+    return "wait.html";
+  }
+
+  @GetMapping("janken2/{hand}")
+  public String janken2(ModelMap model, @RequestParam int matchid, @PathVariable String hand) {
+    Match match = new Match();
+    match.setUser2hand(hand);
+    match.setMatchid(matchid);
+    matchMapper.updateUser2Hand(match);
     return "wait.html";
   }
 }
