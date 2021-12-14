@@ -15,4 +15,7 @@ public interface MatchMapper {
 
   @Select("select * from match; ")
   ArrayList<Match> selectAllMatch();
+
+  @Select("select matchid from match where user2id = #{user2id};")
+  ArrayList<Integer> selectMatchIdByUserid(int user2id);
 }
