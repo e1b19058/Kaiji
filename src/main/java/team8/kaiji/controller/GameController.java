@@ -48,7 +48,12 @@ public class GameController {
     ArrayList<User> user = userMapper.selectAllUser();
     model.addAttribute("user", user);
 
-    ArrayList<Match> match = matchMappar.selectAllMatch();
+    int user2id = userMapper.selectIdByName(prin.getName());
+    ArrayList<Integer> match = matchMapper.selectMatchIdByUserid(user2id);
+
+    for (int matchid : match) {
+      model.addAttribute("match_wait", matchid);
+    }
     return "main.html";
 
   }
