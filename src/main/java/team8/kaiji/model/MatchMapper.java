@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface MatchMapper {
-  @Insert("insert into match (user1id,user2id,user1hand,user2hand) values (#{user1id},#{user2id},#{user1hand},NULL);")
+  @Insert("insert into match (user1id,user2id,user1hand,user2hand, IsAct) values (#{user1id},#{user2id},#{user1hand},NULL,#{isAct});")
   @Options(useGeneratedKeys = true, keyColumn = "matchid", keyProperty = "matchid")
   void insertMatchPlayer1(Match match);
 
@@ -20,6 +20,19 @@ public interface MatchMapper {
   @Select("select matchid from match where user2id = #{user2id};")
   ArrayList<Integer> selectMatchIdByUserid(int user2id);
 
-  @Update("Update Match set user2hand=#{user2hand} where matchid = #{matchid} ")
+  @Update("Update Match set user2hand=#{user2hand}, isAct=#{isAct} where matchid = #{matchid} ")
   void updateUser2Hand(Match match);
+
+  @Select("select matchid from match join users on (match.user1id = users.id) where users.name = #{User1Name}")
+  int selectMatchIdByUser1Name(String User1Name);
+
+  @Select("select IsAct from match where matchid=#{MatchId}")
+
+  int selectIsActByMatchId(int MatchId);
+
+  @Select("select user1hand from match where matchid = #{MatchId}")
+  String selectUser1handByMatchId(int MatchId);
+
+  @Select("select user2hand from match where matchid = #{MatchId}")
+  String selectUser2handByMatchId(int MatchId);
 }

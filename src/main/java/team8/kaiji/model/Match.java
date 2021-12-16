@@ -6,6 +6,7 @@ public class Match {
   int user2id;
   String user1hand;
   String user2hand;
+  int isAct;
 
   public int getMatchid() {
     return matchid;
@@ -45,5 +46,13 @@ public class Match {
 
   public void setUser2hand(String user2hand) {
     this.user2hand = user2hand;
+  }
+
+  public int getIsAct() {
+    return isAct;
+  }
+
+  public void setIsAct(int isAct) {
+    this.isAct = isAct;
   }
 }

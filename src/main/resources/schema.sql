@@ -12,5 +12,6 @@ CREATE TABLE match(
   user1id int not null,
   user2id int not null,
   user1hand char not null,
-  user2hand char
+  user2hand char,
+  isAct int
 );
