@@ -19,6 +19,11 @@
     <a th:href="@{/game/janken/cho(id=${enemyid})}">チョキ</a>
     <a th:href="@{/game/janken/pa(id=${enemyid})}">パー</a>
   </div>
+
+  <div th:if=${judge}>
+    勝敗<br/>
+    [[${judge}]]
+  </div>
 </body>
 
 </html>
