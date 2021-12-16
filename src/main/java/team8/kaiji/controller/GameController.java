@@ -91,10 +91,10 @@ public class GameController {
   }
 
   @GetMapping("janken2/{hand}")
-  public String janken2(ModelMap model, @RequestParam int matchid, @PathVariable String hand) {
+  public String janken2(ModelMap model, @RequestParam int id, @PathVariable String hand) {
     Match match = new Match();
     match.setUser2hand(hand);
-    match.setMatchid(matchid);
+    match.setMatchid(id);
     matchMapper.updateUser2Hand(match);
     return "wait.html";
   }
