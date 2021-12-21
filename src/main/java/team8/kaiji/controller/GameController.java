@@ -81,7 +81,10 @@ public class GameController {
     match.setUser1id(userMapper.selectIdByName(prin.getName()));
     match.setUser2id(id);
     match.setIsAct(1);
-    matchMapper.insertMatchPlayer1(match);
+    String mid = matchMapper.selectIdByUser2idAndUser1name(id, prin.getName());
+    if (mid == null) {
+      matchMapper.insertMatchPlayer1(match);
+    }
     int user1matchid = matchMapper.selectMatchIdByUser1Name(prin.getName());
     int act = matchMapper.selectIsActByMatchId(user1matchid);
     String judge = "a";
