@@ -3,22 +3,13 @@
 
 <head>
   <meta charset="utf-8">
-  <title>matchjanken</title>
+  <title>resultjanken</title>
 </head>
 
 <body>
   <div><a href="/logout">ログアウト</a></div>
   <div><a href="/game/step1">戻る</a></div>
 
-  <h1>
-    <a> VS [[${enemyname}]]</a>
-  </h1>
-
-  <div>
-    <a th:href="@{/game/janken/gu(id=${enemyid})}">グー</a>
-    <a th:href="@{/game/janken/cho(id=${enemyid})}">チョキ</a>
-    <a th:href="@{/game/janken/pa(id=${enemyid})}">パー</a>
-  </div>
 
   <div th:if=${judge}>
     勝敗<br />

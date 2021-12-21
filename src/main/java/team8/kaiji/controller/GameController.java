@@ -84,6 +84,7 @@ public class GameController {
     matchMapper.insertMatchPlayer1(match);
     int user1matchid = matchMapper.selectMatchIdByUser1Name(prin.getName());
     int act = matchMapper.selectIsActByMatchId(user1matchid);
+    String judge = "a";
 
     if (act == 0) {
       String user1hand = matchMapper.selectUser1handByMatchId(user1matchid);
@@ -104,7 +105,7 @@ public class GameController {
       } else if (user2hand.equals("pa")) {
         u2 = 3;
       }
-      String judge = "";
+
       if (u1 == u2) {// あいこ
         judge = "あいこ";
       } else if ((u2 - u1 == 1) || (u2 - u1 == -2)) {// u1勝利
@@ -124,12 +125,45 @@ public class GameController {
   }
 
   @GetMapping("janken2/{hand}")
-  public String janken2(ModelMap model, @RequestParam int id, @PathVariable String hand) {
+  public String janken2(ModelMap model, Principal prin, @RequestParam int id, @PathVariable String hand) {
     Match match = new Match();
     match.setUser2hand(hand);
     match.setMatchid(id);
     match.setIsAct(0);
     matchMapper.updateUser2Hand(match);
+    int user1matchid = matchMapper.selectMatchIdByUser1Name(prin.getName());
+    int act = matchMapper.selectIsActByMatchId(user1matchid);
+    String judge = "a";
+
+    if (act == 0) {
+      String user1hand = matchMapper.selectUser1handByMatchId(user1matchid);
+      String user2hand = matchMapper.selectUser2handByMatchId(user1matchid);
+      int u1 = 0, u2 = 0;
+      if (user1hand.equals("gu")) {
+        u1 = 1;
+      } else if (user1hand.equals("cho")) {
+        u1 = 2;
+      } else if (user1hand.equals("pa")) {
+        u1 = 3;
+      }
+
+      if (user2hand.equals("gu")) {
+        u2 = 1;
+      } else if (user2hand.equals("cho")) {
+        u2 = 2;
+      } else if (user2hand.equals("pa")) {
+        u2 = 3;
+      }
+
+      if (u1 == u2) {// あいこ
+        judge = "あいこ";
+      } else if ((u2 - u1 == 1) || (u2 - u1 == -2)) {// u1勝利
+        judge = "勝ち";
+      } else {// u1敗北
+        judge = "負け";
+      }
+      model.addAttribute("judge", judge);
+    }
     return "wait.html";
   }
 }
