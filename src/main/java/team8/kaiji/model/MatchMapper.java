@@ -35,4 +35,7 @@ public interface MatchMapper {
 
   @Select("select user2hand from match where matchid = #{MatchId}")
   String selectUser2handByMatchId(int MatchId);
+
+  @Select("select matchid from match join users on (match.user1id = users.id) where match.user2id=#{id} and users.name=#{name}")
+  String selectIdByUser2idAndUser1name(int id, String name);
 }
