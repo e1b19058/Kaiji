@@ -19,7 +19,10 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
     auth.inMemoryAuthentication().withUser("user1").password(passwordEncoder().encode("p@ss")).roles("USER");
 
     auth.inMemoryAuthentication().withUser("user2").password(passwordEncoder().encode("pass")).roles("USER");
+
+    auth.inMemoryAuthentication().withUser("master").password(passwordEncoder().encode("masterpass")).roles("MASTER");
   }
+
 
   @Bean
   PasswordEncoder passwordEncoder() {
