@@ -23,7 +23,7 @@ public interface MatchMapper {
   @Update("Update Match set user2hand=#{user2hand}, isAct=#{isAct} where matchid = #{matchid} ")
   void updateUser2Hand(Match match);
 
-  @Select("select matchid from match join users on (match.user1id = users.id) where users.name = #{User1Name} and isAct = 0")
+  @Select("select matchid from match join users on (match.user1id = users.id) where users.name = #{User1Name} ")
   int selectMatchIdByUser1Name(String User1Name);
 
   @Select("select matchid from match join users on (match.user2id = users.id) where users.name = #{User2Name} and isAct = 0")
