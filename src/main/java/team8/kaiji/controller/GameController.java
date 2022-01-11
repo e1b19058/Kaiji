@@ -53,6 +53,12 @@ public class GameController {
 
     model.addAttribute("match_wait", match);
 
+    ArrayList<User> userdb = userMapper.selectAllUser();
+    ArrayList<Match> matchdb = matchMapper.selectAllMatch();
+
+    model.addAttribute("userdb", userdb);
+    model.addAttribute("matchdb", matchdb);
+
     return "main.html";
 
   }

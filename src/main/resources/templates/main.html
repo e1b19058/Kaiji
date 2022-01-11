@@ -26,4 +26,51 @@
 
 </ul>
 
+<table sec:authorize="hasRole('ROLE_MASTER')">
+  <thead>
+    <th>Index</th>
+    <th>id</th>
+    <th>name</th>
+    <th>gu</th>
+    <th>cho</th>
+    <th>pa</th>
+    <th>star</th>
+  </thead>
+
+  <tbody>
+    <tr th:each="users,stat:${userdb}">
+      <td>[[${stat.index}]]</td>
+      <td>[[${users.id}]]</td>
+      <td>[[${users.name}]]</td>
+      <td>[[${users.gu}]]</td>
+      <td>[[${users.cho}]]</td>
+      <td>[[${users.pa}]]</td>
+      <td>[[${users.star}]]</td><br />
+    </tr>
+  </tbody>
+</table>
+
+<table sec:authorize="hasRole('ROLE_MASTER')">
+  <thead>
+    <th>Index</th>
+    <th>matchid</th>
+    <th>user1id</th>
+    <th>user2id</th>
+    <th>user1hand</th>
+    <th>user2hand</th>
+    <th>isAct</th>
+  </thead>
+  <tbody>
+    <tr th:each="match,stat:${matchdb}">
+      <td>[[${stat.index}]]</td>
+      <td>[[${match.matchid}]]</td>
+      <td>[[${match.user1id}]]</td>
+      <td>[[${match.user2id}]]</td>
+      <td>[[${match.user1hand}]]</td>
+      <td>[[${match.user2hand}]]</td>
+      <td>[[${match.isAct}]]</td><br />
+    </tr>
+  </tbody>
+</table>
+
 </html>
