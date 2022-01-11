@@ -144,6 +144,9 @@ public class GameController {
     int act = matchMapper.selectIsActByMatchId(user1matchid);
     String judge = "a";
 
+    int user1id = matchMapper.selectUser1IdByMatchId(user1matchid);
+    int user2id = matchMapper.selectUser2IdByMatchId(user1matchid);
+
     if (act == 0) {
       String user1hand = matchMapper.selectUser1handByMatchId(user1matchid);
       String user2hand = matchMapper.selectUser2handByMatchId(user1matchid);
@@ -166,13 +169,106 @@ public class GameController {
 
       if (u1 == u2) {// あいこ
         judge = "あいこ";
+        switch (u1) {
+          case 1:
+            int u1Gu = userMapper.selectGu(user1id) - 1;
+            int u2Gu = userMapper.selectGu(user2id) - 1;
+            userMapper.updateGu(u1Gu, user1id);
+            userMapper.updateGu(u2Gu, user2id);
+            break;
+          case 2:
+            int u1Cho = userMapper.selectCho(user1id) - 1;
+            int u2Cho = userMapper.selectCho(user2id) - 1;
+            userMapper.updateCho(u1Cho, user1id);
+            userMapper.updateCho(u2Cho, user2id);
+            break;
+          case 3:
+            int u1Pa = userMapper.selectPa(user1id) - 1;
+            int u2Pa = userMapper.selectPa(user2id) - 1;
+            userMapper.updatePa(u1Pa, user1id);
+            userMapper.updatePa(u2Pa, user2id);
+            break;
+        }
       } else if ((u2 - u1 == 1) || (u2 - u1 == -2)) {// u1勝利
         judge = "負け";
+        switch (u1) {
+          case 1: // u1=gu,u2=cho
+            int u1Gu = userMapper.selectGu(user1id) - 1;
+            int u2Cho = userMapper.selectCho(user2id) - 1;
+            userMapper.updateGu(u1Gu, user1id);
+            userMapper.updateCho(u2Cho, user2id);
+            break;
+          case 2: // u1=cho,u2=pa
+            int u1Cho = userMapper.selectCho(user1id) - 1;
+            int u2Pa = userMapper.selectPa(user2id) - 1;
+            userMapper.updateCho(u1Cho, user1id);
+            userMapper.updatePa(u2Pa, user2id);
+            break;
+          case 3: // u1=pa,u2=gu
+            int u1Pa = userMapper.selectPa(user1id) - 1;
+            int u2Gu = userMapper.selectGu(user2id) - 1;
+            userMapper.updatePa(u1Pa, user1id);
+            userMapper.updateGu(u2Gu, user2id);
+            break;
+        }
       } else {// u1敗北
         judge = "勝ち";
+        switch (u1) {
+          case 1: // u1=Gu,u2=Pa
+            int u1Gu = userMapper.selectGu(user1id) - 1;
+            int u2Pa = userMapper.selectPa(user2id) - 1;
+            userMapper.updateGu(u1Gu, user1id);
+            userMapper.updatePa(u2Pa, user2id);
+            break;
+          case 2: // u1=Cho,u2=Gu
+            int u1Cho = userMapper.selectCho(user1id) - 1;
+            int u2Gu = userMapper.selectGu(user2id) - 1;
+            userMapper.updateCho(u1Cho, user1id);
+            userMapper.updateGu(u2Gu, user2id);
+            break;
+          case 3: // u1=pa,u2=cho
+            int u1Pa = userMapper.selectPa(user1id) - 1;
+            int u2Cho = userMapper.selectCho(user2id) - 1;
+            userMapper.updatePa(u1Pa, user1id);
+            userMapper.updateCho(u2Cho, user2id);
+            break;
+        }
       }
       model.addAttribute("judge", judge);
     }
     return "wait.html";
+  }
+
+  @GetMapping("nextgame")
+  public String nextgame(ModelMap model, Principal prin) {
+
+    int cnt = 0;
+    User userlist = new User();
+    ArrayList<String> namelist = userMapper.selectAllUserName();
+    for (String username : namelist) {
+      if (prin.getName() == username) {
+        cnt++;
+      }
+    }
+    if (cnt == 0) {
+      userlist.setName(prin.getName());
+      userMapper.insertUser(userlist);
+    }
+    ArrayList<User> user = userMapper.selectAllUser();
+    model.addAttribute("user", user);
+
+    int user2id = userMapper.selectIdByName(prin.getName());
+    ArrayList<Integer> match = matchMapper.selectMatchIdByUserid(user2id);
+
+    model.addAttribute("match_wait", match);
+
+    ArrayList<User> userdb = userMapper.selectAllUser();
+    ArrayList<Match> matchdb = matchMapper.selectAllMatch();
+
+    model.addAttribute("userdb", userdb);
+    model.addAttribute("matchdb", matchdb);
+
+    matchMapper.deletematchById(user2id);
+    return "main.html";
   }
 }
