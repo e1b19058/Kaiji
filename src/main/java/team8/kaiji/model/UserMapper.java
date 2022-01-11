@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface UserMapper {
@@ -28,4 +29,23 @@ public interface UserMapper {
 
   @Select("select * from users")
   ArrayList<User> selectAllUsers();
+
+  @Select("select gu from users where id=#{userid}")
+  int selectGu(int userid);
+
+  @Select("select cho from users where id=#{userid}")
+  int selectCho(int userid);
+
+  @Select("select pa from users where id=#{userid}")
+  int selectPa(int userid);
+
+  @Update("Update Users set gu=#{Gu} where id=#{userid}")
+  void updateGu(int Gu, int userid);
+
+  @Update("Update Users set cho=#{Cho} where id=#{userid}")
+  void updateCho(int Cho, int userid);
+
+  @Update("Update Users set pa=#{Pa} where id=#{userid}")
+  void updatePa(int Pa, int userid);
+
 }

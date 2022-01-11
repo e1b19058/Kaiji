@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.Delete;
 
 @Mapper
 public interface MatchMapper {
@@ -41,5 +42,14 @@ public interface MatchMapper {
 
   @Select("select matchid from match join users on (match.user1id = users.id) where match.user2id=#{id} and users.name=#{name}")
   String selectIdByUser2idAndUser1name(int id, String name);
+
+  @Select("select user1id from match where matchid=#{id}")
+  int selectUser1IdByMatchId(int id);
+
+  @Select("select user2id from match where matchid=#{id}")
+  int selectUser2IdByMatchId(int id);
+
+  @Delete("DELETE FROM Match WHERE user2id =#{id} and isAct=0")
+  boolean deletematchById(int id);
 
 }
