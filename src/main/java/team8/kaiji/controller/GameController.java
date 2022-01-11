@@ -134,7 +134,7 @@ public class GameController {
     match.setMatchid(id);
     match.setIsAct(0);
     matchMapper.updateUser2Hand(match);
-    int user1matchid = matchMapper.selectMatchIdByUser1Name(prin.getName());
+    int user1matchid = matchMapper.selectMatchIdByUser2Name(prin.getName());
     int act = matchMapper.selectIsActByMatchId(user1matchid);
     String judge = "a";
 
@@ -161,9 +161,9 @@ public class GameController {
       if (u1 == u2) {// あいこ
         judge = "あいこ";
       } else if ((u2 - u1 == 1) || (u2 - u1 == -2)) {// u1勝利
-        judge = "勝ち";
-      } else {// u1敗北
         judge = "負け";
+      } else {// u1敗北
+        judge = "勝ち";
       }
       model.addAttribute("judge", judge);
     }

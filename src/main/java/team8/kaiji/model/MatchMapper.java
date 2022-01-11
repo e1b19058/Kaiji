@@ -26,6 +26,9 @@ public interface MatchMapper {
   @Select("select matchid from match join users on (match.user1id = users.id) where users.name = #{User1Name} and isAct = 0")
   int selectMatchIdByUser1Name(String User1Name);
 
+  @Select("select matchid from match join users on (match.user2id = users.id) where users.name = #{User2Name} and isAct = 0")
+  int selectMatchIdByUser2Name(String User2Name);
+
   @Select("select IsAct from match where matchid=#{MatchId}")
 
   int selectIsActByMatchId(int MatchId);
