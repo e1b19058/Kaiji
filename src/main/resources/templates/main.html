@@ -10,14 +10,14 @@
   <div><a href="/logout">ログアウト</a></div>
 </body>
 
-<ul>
+<ul sec:authorize="hasRole('ROLE_USER')">
   <li th:each="user : ${user}"><a th:href="@{/game/match(id=${user.id})}">[[${user.name}]]</a></li>
 
 </ul>
 
-<H2>対戦待ち</H2>
+<H2 sec:authorize="hasRole('ROLE_USER')">対戦待ち</H2>
 
-<ul>
+<ul sec:authorize="hasRole('ROLE_USER')">
   <li th:each="match : ${match_wait}">
     <a th:href="@{/game/matchwait(id=${match})}">
       matchNo:[[${match}]]
