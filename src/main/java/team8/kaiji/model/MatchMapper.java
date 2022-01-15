@@ -18,8 +18,11 @@ public interface MatchMapper {
   @Select("select * from match; ")
   ArrayList<Match> selectAllMatch();
 
+  @Select("select matchid from match where user1id = #{user1id};")
+  ArrayList<Integer> selectMatchIdByUserid(int user1id);
+
   @Select("select matchid from match where user2id = #{user2id};")
-  ArrayList<Integer> selectMatchIdByUserid(int user2id);
+  ArrayList<Integer> selectMatchIdByUser2id(int user2id);
 
   @Update("Update Match set user2hand=#{user2hand}, isAct=#{isAct} where matchid = #{matchid} ")
   void updateUser2Hand(Match match);
@@ -49,7 +52,7 @@ public interface MatchMapper {
   @Select("select user2id from match where matchid=#{id}")
   int selectUser2IdByMatchId(int id);
 
-  @Delete("DELETE FROM Match WHERE user2id =#{id} and isAct=0")
+  @Delete("DELETE FROM Match WHERE user1id =#{id} and isAct=0")
   boolean deletematchById(int id);
 
 }

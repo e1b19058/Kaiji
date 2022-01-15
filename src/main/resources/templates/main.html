@@ -10,6 +10,13 @@
   <div><a href="/logout">ログアウト</a></div>
 </body>
 
+<div>
+  グー:[[${gucnt}]]
+  チョキ:[[${chocnt}]]
+  パー:[[${pacnt}]]
+  スター:[[${starcnt}]]
+</div>
+
 <ul sec:authorize="hasRole('ROLE_USER')">
   <li th:each="user : ${user}"><a th:href="@{/game/match(id=${user.id})}">[[${user.name}]]</a></li>
 

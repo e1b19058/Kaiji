@@ -48,4 +48,10 @@ public interface UserMapper {
   @Update("Update Users set pa=#{Pa} where id=#{userid}")
   void updatePa(int Pa, int userid);
 
+  @Select("Select star from Users where id=#{userid}")
+  int selectStar(int userid);
+
+  @Update("Update Users set star=#{star} where id=#{userid}")
+  void updateStar(int star, int userid);
+
 }

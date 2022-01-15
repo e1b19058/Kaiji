@@ -8,11 +8,14 @@
 
 <body>
   <div><a href="/logout">ログアウト</a></div>
-  <div><a href="/game/step1">戻る</a></div>
 
   <h1>
     <a> VS [[${enemyname}]]</a>
   </h1>
+
+  <div th:if=${alert}>
+    [[${alert}]]
+  </div>
 
   <div>
     <a th:href="@{/game/janken/gu(id=${enemyid})}">グー</a>
@@ -23,7 +26,10 @@
   <div th:if=${judge}>
     勝敗<br />
     [[${judge}]]
+
+    <a href="/game/nextgame">次へ</a>
   </div>
+
 </body>
 
 </html>
