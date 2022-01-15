@@ -49,7 +49,7 @@ public class GameController {
     model.addAttribute("user", user);
 
     int user2id = userMapper.selectIdByName(prin.getName());
-    ArrayList<Integer> match = matchMapper.selectMatchIdByUserid(user2id);
+    ArrayList<Integer> match = matchMapper.selectMatchIdByUser2id(user2id);
 
     model.addAttribute("match_wait", match);
 
@@ -58,6 +58,18 @@ public class GameController {
 
     model.addAttribute("userdb", userdb);
     model.addAttribute("matchdb", matchdb);
+
+    int userid = userMapper.selectIdByName(prin.getName()); // mainにカードとスター枚数表示処理
+
+    int gucnt = userMapper.selectGu(userid);
+    int chocnt = userMapper.selectCho(userid);
+    int pacnt = userMapper.selectPa(userid);
+    int starcnt = userMapper.selectStar(userid);
+
+    model.addAttribute("gucnt", gucnt);
+    model.addAttribute("chocnt", chocnt);
+    model.addAttribute("pacnt", pacnt);
+    model.addAttribute("starcnt", starcnt);
 
     return "main.html";
 
@@ -82,21 +94,51 @@ public class GameController {
 
   @GetMapping("janken/{hand}")
   public String janken(ModelMap model, Principal prin, @RequestParam int id, @PathVariable String hand) {
+    int user1id = userMapper.selectIdByName(prin.getName());
     Match match = new Match();
     match.setUser1hand(hand);
-    match.setUser1id(userMapper.selectIdByName(prin.getName()));
+    match.setUser1id(user1id);
     match.setUser2id(id);
     match.setIsAct(1);
     String mid = matchMapper.selectIdByUser2idAndUser1name(id, prin.getName());
     if (mid == null) {
       matchMapper.insertMatchPlayer1(match);
     }
+
+    // guchokipa枚数制限処理
+    int gucnt = userMapper.selectGu(user1id);
+    int chocnt = userMapper.selectCho(user1id);
+    int pacnt = userMapper.selectPa(user1id);
+
     int user1matchid = matchMapper.selectMatchIdByUser1Name(prin.getName());
+    String user1hand = matchMapper.selectUser1handByMatchId(user1matchid);
+
+    String alert;
+    if (user1hand.equals("gu")) {
+      if (gucnt == 0) {
+        alert = "グーは0枚です";
+        model.addAttribute("alert", alert);
+        return "match.html";
+      }
+    } else if (user1hand.equals("cho")) {
+      if (chocnt == 0) {
+        alert = "チョキは0枚です";
+        model.addAttribute("alert", alert);
+        return "match.html";
+      }
+    } else if (user1hand.equals("pa")) {
+      if (pacnt == 0) {
+        alert = "パーは0枚です";
+        model.addAttribute("alert", alert);
+        return "match.html";
+      }
+    }
+    // guchopa枚数制限処理
+
     int act = matchMapper.selectIsActByMatchId(user1matchid);
     String judge = "a";
 
     if (act == 0) {
-      String user1hand = matchMapper.selectUser1handByMatchId(user1matchid);
       String user2hand = matchMapper.selectUser2handByMatchId(user1matchid);
       int u1 = 0, u2 = 0;
       if (user1hand.equals("gu")) {
@@ -167,6 +209,9 @@ public class GameController {
         u2 = 3;
       }
 
+      int u1star = userMapper.selectStar(user1id);
+      int u2star = userMapper.selectStar(user2id);
+
       if (u1 == u2) {// あいこ
         judge = "あいこ";
         switch (u1) {
@@ -197,18 +242,30 @@ public class GameController {
             int u2Cho = userMapper.selectCho(user2id) - 1;
             userMapper.updateGu(u1Gu, user1id);
             userMapper.updateCho(u2Cho, user2id);
+            u1star++;
+            u2star--;
+            userMapper.updateStar(u1star, user1id);
+            userMapper.updateStar(u2star, user2id);
             break;
           case 2: // u1=cho,u2=pa
             int u1Cho = userMapper.selectCho(user1id) - 1;
             int u2Pa = userMapper.selectPa(user2id) - 1;
             userMapper.updateCho(u1Cho, user1id);
             userMapper.updatePa(u2Pa, user2id);
+            u1star++;
+            u2star--;
+            userMapper.updateStar(u1star, user1id);
+            userMapper.updateStar(u2star, user2id);
             break;
           case 3: // u1=pa,u2=gu
             int u1Pa = userMapper.selectPa(user1id) - 1;
             int u2Gu = userMapper.selectGu(user2id) - 1;
             userMapper.updatePa(u1Pa, user1id);
             userMapper.updateGu(u2Gu, user2id);
+            u1star++;
+            u2star--;
+            userMapper.updateStar(u1star, user1id);
+            userMapper.updateStar(u2star, user2id);
             break;
         }
       } else {// u1敗北
@@ -219,22 +276,53 @@ public class GameController {
             int u2Pa = userMapper.selectPa(user2id) - 1;
             userMapper.updateGu(u1Gu, user1id);
             userMapper.updatePa(u2Pa, user2id);
+            u1star--;
+            u2star++;
+            userMapper.updateStar(u1star, user1id);
+            userMapper.updateStar(u2star, user2id);
             break;
           case 2: // u1=Cho,u2=Gu
             int u1Cho = userMapper.selectCho(user1id) - 1;
             int u2Gu = userMapper.selectGu(user2id) - 1;
             userMapper.updateCho(u1Cho, user1id);
             userMapper.updateGu(u2Gu, user2id);
+            u1star--;
+            u2star++;
+            userMapper.updateStar(u1star, user1id);
+            userMapper.updateStar(u2star, user2id);
             break;
           case 3: // u1=pa,u2=cho
             int u1Pa = userMapper.selectPa(user1id) - 1;
             int u2Cho = userMapper.selectCho(user2id) - 1;
             userMapper.updatePa(u1Pa, user1id);
             userMapper.updateCho(u2Cho, user2id);
+            u1star--;
+            u2star++;
+            userMapper.updateStar(u1star, user1id);
+            userMapper.updateStar(u2star, user2id);
             break;
         }
       }
       model.addAttribute("judge", judge);
+
+      String gameover = "Game Over";
+      String gameclear = "Game Clear";
+
+      int star = userMapper.selectStar(user2id);
+      int gucnt = userMapper.selectGu(user2id);
+      int chocnt = userMapper.selectCho(user2id);
+      int pacnt = userMapper.selectPa(user2id);
+      int cardsum = gucnt + chocnt + pacnt;
+      if (star == 0) {
+        model.addAttribute("gamejudge", gameover);
+        return "gameover.html";
+      } else if (cardsum == 0 && star < 3) {
+        model.addAttribute("gamejudge", gameover);
+        return "gameover.html";
+      } else if (cardsum == 0 && star >= 3) {
+        model.addAttribute("gamejudge", gameclear);
+        return "gameclear.html";
+      }
     }
     return "wait.html";
   }
@@ -257,8 +345,8 @@ public class GameController {
     ArrayList<User> user = userMapper.selectAllUser();
     model.addAttribute("user", user);
 
-    int user2id = userMapper.selectIdByName(prin.getName());
-    ArrayList<Integer> match = matchMapper.selectMatchIdByUserid(user2id);
+    int user1id = userMapper.selectIdByName(prin.getName());
+    ArrayList<Integer> match = matchMapper.selectMatchIdByUserid(user1id);
 
     model.addAttribute("match_wait", match);
 
@@ -268,7 +356,19 @@ public class GameController {
     model.addAttribute("userdb", userdb);
     model.addAttribute("matchdb", matchdb);
 
-    matchMapper.deletematchById(user2id);
+    matchMapper.deletematchById(user1id);
+
+    int userid = userMapper.selectIdByName(prin.getName());
+
+    int gucnt = userMapper.selectGu(userid);
+    int chocnt = userMapper.selectCho(userid);
+    int pacnt = userMapper.selectPa(userid);
+    int starcnt = userMapper.selectStar(userid);
+
+    model.addAttribute("gucnt", gucnt);
+    model.addAttribute("chocnt", chocnt);
+    model.addAttribute("pacnt", pacnt);
+    model.addAttribute("starcnt", starcnt);
     return "main.html";
   }
 }
