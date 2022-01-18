@@ -20,6 +20,14 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
 
     auth.inMemoryAuthentication().withUser("user2").password(passwordEncoder().encode("a")).roles("USER");
 
+    auth.inMemoryAuthentication().withUser("user3").password(passwordEncoder().encode("a")).roles("USER");
+
+    auth.inMemoryAuthentication().withUser("user4").password(passwordEncoder().encode("a")).roles("USER");
+
+    auth.inMemoryAuthentication().withUser("user5").password(passwordEncoder().encode("a")).roles("USER");
+
+    auth.inMemoryAuthentication().withUser("user6").password(passwordEncoder().encode("a")).roles("USER");
+
     auth.inMemoryAuthentication().withUser("master").password(passwordEncoder().encode("a")).roles("MASTER");
   }
 
