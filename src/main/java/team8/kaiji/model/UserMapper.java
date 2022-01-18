@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.Delete;
 
 @Mapper
 public interface UserMapper {
@@ -53,5 +54,8 @@ public interface UserMapper {
 
   @Update("Update Users set star=#{star} where id=#{userid}")
   void updateStar(int star, int userid);
+
+  @Delete("Delete from users where id = #{id}")
+  boolean deleteUserById(int id);
 
 }

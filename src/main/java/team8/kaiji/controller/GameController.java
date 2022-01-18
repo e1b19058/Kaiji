@@ -304,7 +304,7 @@ public class GameController {
         }
       }
       model.addAttribute("judge", judge);
-
+      //ゲームクリアー、ゲームオーバー処理
       String gameover = "Game Over";
       String gameclear = "Game Clear";
 
@@ -315,14 +315,18 @@ public class GameController {
       int cardsum = gucnt + chocnt + pacnt;
       if (star == 0) {
         model.addAttribute("gamejudge", gameover);
+        userMapper.deleteUserById(user2id);
         return "gameover.html";
       } else if (cardsum == 0 && star < 3) {
         model.addAttribute("gamejudge", gameover);
+        userMapper.deleteUserById(user2id);
         return "gameover.html";
       } else if (cardsum == 0 && star >= 3) {
         model.addAttribute("gamejudge", gameclear);
+        userMapper.deleteUserById(user2id);
         return "gameclear.html";
       }
+      //ゲームクリアー、ゲームオーバー処理
     }
     return "wait.html";
   }
