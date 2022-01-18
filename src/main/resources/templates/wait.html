@@ -8,11 +8,21 @@
 
 <body>
   <div><a href="/logout">ログアウト</a></div>
-  <div><a href="/game/step1">戻る</a></div>
 
   <h1>
     <a> VS [[${enemyname}]]</a>
   </h1>
+
+  <div>
+    グー:[[${gucnt}]]
+    チョキ:[[${chocnt}]]
+    パー:[[${pacnt}]]
+    スター:[[${starcnt}]]
+  </div>
+
+  <div th:if=${alert}>
+    [[${alert}]]
+  </div>
 
   <div>
     <a th:href="@{/game/janken2/gu(id=${matchid})}">グー</a>
@@ -24,7 +34,7 @@
     勝敗<br />
     [[${judge}]]
 
-    <a href="/game/nextgame">次へ</a>
+    <a href="/game/nextgame2">次へ</a>
   </div>
 
   <div th:if=${gamejudge}>

@@ -89,12 +89,73 @@ public class GameController {
     String username = userMapper.selectNameById(id);
     model.addAttribute("enemyname", username);
     model.addAttribute("enemyid", id);
+    int userid = userMapper.selectIdByName(prin.getName()); // mainにカードとスター枚数表示処理
+
+    int gucnt = userMapper.selectGu(userid);
+    int chocnt = userMapper.selectCho(userid);
+    int pacnt = userMapper.selectPa(userid);
+    int starcnt = userMapper.selectStar(userid);
+
+    model.addAttribute("gucnt", gucnt);
+    model.addAttribute("chocnt", chocnt);
+    model.addAttribute("pacnt", pacnt);
+    model.addAttribute("starcnt", starcnt);
     return "match.html";
   }
 
   @GetMapping("janken/{hand}")
   public String janken(ModelMap model, Principal prin, @RequestParam int id, @PathVariable String hand) {
+
+    int userid = userMapper.selectIdByName(prin.getName()); // mainにカードとスター枚数表示処理
+
+    int gucnt = userMapper.selectGu(userid);
+    int chocnt = userMapper.selectCho(userid);
+    int pacnt = userMapper.selectPa(userid);
+    int starcnt = userMapper.selectStar(userid);
+
+    model.addAttribute("gucnt", gucnt);
+    model.addAttribute("chocnt", chocnt);
+    model.addAttribute("pacnt", pacnt);
+    model.addAttribute("starcnt", starcnt);
+
+    model.addAttribute("enemyid", id);
     int user1id = userMapper.selectIdByName(prin.getName());
+
+    // guchokipa枚数制限処理
+    gucnt = userMapper.selectGu(user1id);
+    chocnt = userMapper.selectCho(user1id);
+    pacnt = userMapper.selectPa(user1id);
+    int isAct;
+    try {
+      int matchid = matchMapper.selectMatchIdByUser1Name(prin.getName());
+      isAct = matchMapper.selectIsActByMatchId(matchid);
+    } catch (Exception e) {
+      isAct = 1;
+    }
+    String alert;
+    if (isAct != 0) {
+      if (hand.equals("gu")) {
+        if (gucnt == 0) {
+          alert = "グーは0枚です";
+          model.addAttribute("alert", alert);
+          return "match.html";
+        }
+      } else if (hand.equals("cho")) {
+        if (chocnt == 0) {
+          alert = "チョキは0枚です";
+          model.addAttribute("alert", alert);
+          return "match.html";
+        }
+      } else if (hand.equals("pa")) {
+        if (pacnt == 0) {
+          alert = "パーは0枚です";
+          model.addAttribute("alert", alert);
+          return "match.html";
+        }
+      }
+    }
+    // guchopa枚数制限処理
+
     Match match = new Match();
     match.setUser1hand(hand);
     match.setUser1id(user1id);
@@ -104,48 +165,18 @@ public class GameController {
     if (mid == null) {
       matchMapper.insertMatchPlayer1(match);
     }
-
-    // guchokipa枚数制限処理
-    int gucnt = userMapper.selectGu(user1id);
-    int chocnt = userMapper.selectCho(user1id);
-    int pacnt = userMapper.selectPa(user1id);
-
     int user1matchid = matchMapper.selectMatchIdByUser1Name(prin.getName());
-    String user1hand = matchMapper.selectUser1handByMatchId(user1matchid);
-
-    String alert;
-    if (user1hand.equals("gu")) {
-      if (gucnt == 0) {
-        alert = "グーは0枚です";
-        model.addAttribute("alert", alert);
-        return "match.html";
-      }
-    } else if (user1hand.equals("cho")) {
-      if (chocnt == 0) {
-        alert = "チョキは0枚です";
-        model.addAttribute("alert", alert);
-        return "match.html";
-      }
-    } else if (user1hand.equals("pa")) {
-      if (pacnt == 0) {
-        alert = "パーは0枚です";
-        model.addAttribute("alert", alert);
-        return "match.html";
-      }
-    }
-    // guchopa枚数制限処理
-
     int act = matchMapper.selectIsActByMatchId(user1matchid);
     String judge = "a";
 
     if (act == 0) {
       String user2hand = matchMapper.selectUser2handByMatchId(user1matchid);
       int u1 = 0, u2 = 0;
-      if (user1hand.equals("gu")) {
+      if (hand.equals("gu")) {
         u1 = 1;
-      } else if (user1hand.equals("cho")) {
+      } else if (hand.equals("cho")) {
         u1 = 2;
-      } else if (user1hand.equals("pa")) {
+      } else if (hand.equals("pa")) {
         u1 = 3;
       }
 
@@ -170,13 +201,77 @@ public class GameController {
   }
 
   @GetMapping("matchwait")
-  public String matchwait(ModelMap model, @RequestParam int id) {
+  public String matchwait(ModelMap model, @RequestParam int id, Principal prin) {
     model.addAttribute("matchid", id);
+
+    int userid = userMapper.selectIdByName(prin.getName()); // mainにカードとスター枚数表示処理
+
+    int gucnt = userMapper.selectGu(userid);
+    int chocnt = userMapper.selectCho(userid);
+    int pacnt = userMapper.selectPa(userid);
+    int starcnt = userMapper.selectStar(userid);
+
+    model.addAttribute("gucnt", gucnt);
+    model.addAttribute("chocnt", chocnt);
+    model.addAttribute("pacnt", pacnt);
+    model.addAttribute("starcnt", starcnt);
+
     return "wait.html";
   }
 
   @GetMapping("janken2/{hand}")
   public String janken2(ModelMap model, Principal prin, @RequestParam int id, @PathVariable String hand) {
+
+    int userid = userMapper.selectIdByName(prin.getName()); // mainにカードとスター枚数表示処理
+
+    int gucnt = userMapper.selectGu(userid);
+    int chocnt = userMapper.selectCho(userid);
+    int pacnt = userMapper.selectPa(userid);
+    int starcnt = userMapper.selectStar(userid);
+
+    model.addAttribute("gucnt", gucnt);
+    model.addAttribute("chocnt", chocnt);
+    model.addAttribute("pacnt", pacnt);
+    model.addAttribute("starcnt", starcnt);
+
+    model.addAttribute("matchid", id);
+    int user2id = userMapper.selectIdByName(prin.getName());
+
+    // guchokipa枚数制限処理
+    gucnt = userMapper.selectGu(user2id);
+    chocnt = userMapper.selectCho(user2id);
+    pacnt = userMapper.selectPa(user2id);
+    int isAct;
+    try {
+      int matchid = id;
+      isAct = matchMapper.selectIsActByMatchId(matchid);
+    } catch (Exception e) {
+      isAct = 1;
+    }
+    String alert;
+    if (isAct != 0) {
+      if (hand.equals("gu")) {
+        if (gucnt == 0) {
+          alert = "グーは0枚です";
+          model.addAttribute("alert", alert);
+          return "wait.html";
+        }
+      } else if (hand.equals("cho")) {
+        if (chocnt == 0) {
+          alert = "チョキは0枚です";
+          model.addAttribute("alert", alert);
+          return "wait.html";
+        }
+      } else if (hand.equals("pa")) {
+        if (pacnt == 0) {
+          alert = "パーは0枚です";
+          model.addAttribute("alert", alert);
+          return "wait.html";
+        }
+      }
+    }
+    // guchopa枚数制限処理
+
     Match match = new Match();
     match.setUser2hand(hand);
     match.setMatchid(id);
@@ -187,7 +282,7 @@ public class GameController {
     String judge = "a";
 
     int user1id = matchMapper.selectUser1IdByMatchId(user1matchid);
-    int user2id = matchMapper.selectUser2IdByMatchId(user1matchid);
+    user2id = matchMapper.selectUser2IdByMatchId(user1matchid);
 
     if (act == 0) {
       String user1hand = matchMapper.selectUser1handByMatchId(user1matchid);
@@ -304,14 +399,14 @@ public class GameController {
         }
       }
       model.addAttribute("judge", judge);
-      //ゲームクリアー、ゲームオーバー処理
+      // ゲームクリアー、ゲームオーバー処理
       String gameover = "Game Over";
       String gameclear = "Game Clear";
 
       int star = userMapper.selectStar(user2id);
-      int gucnt = userMapper.selectGu(user2id);
-      int chocnt = userMapper.selectCho(user2id);
-      int pacnt = userMapper.selectPa(user2id);
+      gucnt = userMapper.selectGu(user2id);
+      chocnt = userMapper.selectCho(user2id);
+      pacnt = userMapper.selectPa(user2id);
       int cardsum = gucnt + chocnt + pacnt;
       if (star == 0) {
         model.addAttribute("gamejudge", gameover);
@@ -326,7 +421,7 @@ public class GameController {
         userMapper.deleteUserById(user2id);
         return "gameclear.html";
       }
-      //ゲームクリアー、ゲームオーバー処理
+      // ゲームクリアー、ゲームオーバー処理
     }
     return "wait.html";
   }
@@ -361,6 +456,49 @@ public class GameController {
     model.addAttribute("matchdb", matchdb);
 
     matchMapper.deletematchById(user1id);
+
+    int userid = userMapper.selectIdByName(prin.getName());
+
+    int gucnt = userMapper.selectGu(userid);
+    int chocnt = userMapper.selectCho(userid);
+    int pacnt = userMapper.selectPa(userid);
+    int starcnt = userMapper.selectStar(userid);
+
+    model.addAttribute("gucnt", gucnt);
+    model.addAttribute("chocnt", chocnt);
+    model.addAttribute("pacnt", pacnt);
+    model.addAttribute("starcnt", starcnt);
+    return "main.html";
+  }
+
+  @GetMapping("nextgame2")
+  public String nextgame2(ModelMap model, Principal prin) {
+
+    int cnt = 0;
+    User userlist = new User();
+    ArrayList<String> namelist = userMapper.selectAllUserName();
+    for (String username : namelist) {
+      if (prin.getName() == username) {
+        cnt++;
+      }
+    }
+    if (cnt == 0) {
+      userlist.setName(prin.getName());
+      userMapper.insertUser(userlist);
+    }
+    ArrayList<User> user = userMapper.selectAllUser();
+    model.addAttribute("user", user);
+
+    int user2id = userMapper.selectIdByName(prin.getName());
+    ArrayList<Integer> match = matchMapper.selectMatchIdByUser2id(user2id);
+
+    model.addAttribute("match_wait", match);
+
+    ArrayList<User> userdb = userMapper.selectAllUser();
+    ArrayList<Match> matchdb = matchMapper.selectAllMatch();
+
+    model.addAttribute("userdb", userdb);
+    model.addAttribute("matchdb", matchdb);
 
     int userid = userMapper.selectIdByName(prin.getName());
 
