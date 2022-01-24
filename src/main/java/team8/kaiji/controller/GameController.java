@@ -71,6 +71,8 @@ public class GameController {
     model.addAttribute("pacnt", pacnt);
     model.addAttribute("starcnt", starcnt);
 
+    model.addAttribute("myid", userid);
+
     return "main.html";
 
   }
@@ -445,7 +447,7 @@ public class GameController {
     model.addAttribute("user", user);
 
     int user1id = userMapper.selectIdByName(prin.getName());
-    ArrayList<Integer> match = matchMapper.selectMatchIdByUserid(user1id);
+    ArrayList<Integer> match = matchMapper.selectMatchIdByUser2id(user1id);
 
     model.addAttribute("match_wait", match);
 
@@ -511,6 +513,8 @@ public class GameController {
     model.addAttribute("chocnt", chocnt);
     model.addAttribute("pacnt", pacnt);
     model.addAttribute("starcnt", starcnt);
+
+    model.addAttribute("myid", userid);
     return "main.html";
   }
 }

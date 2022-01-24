@@ -4,38 +4,68 @@
 <head>
   <meta charset="utf-8">
   <title>matchjanken</title>
+  <style type="text/css">
+    gu {
+      color: red;
+    }
+
+    cho {
+      color: darkorange;
+    }
+
+    pa {
+      color: blue;
+    }
+
+    star {
+      color: gold
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .center * {
+      margin-right: auto;
+      margin-left: auto;
+    }
+  </style>
 </head>
 
 <body>
   <div><a href="/logout">ログアウト</a></div>
 
-  <h1>
+  <h1 class="center">
     <a> VS [[${enemyname}]]</a>
   </h1>
 
-  <div>
-    グー:[[${gucnt}]]
-    チョキ:[[${chocnt}]]
-    パー:[[${pacnt}]]
-    スター:[[${starcnt}]]
+  <div class="center">
+    <h3>
+      <star>★</star> [[${starcnt}]]<br />
+    </h3>
+    <gu>グー</gu> [[${gucnt}]]
+    <cho>チョキ</cho> [[${chocnt}]]
+    <pa>パー</pa> [[${pacnt}]]
   </div>
 
   <div th:if=${alert}>
-    [[${alert}]]
+    <a class="center">[[${alert}]]</a>
   </div>
 
-  <div>
+  <div class="center">
     <a th:href="@{/game/janken/gu(id=${enemyid})}">グー</a>
     <a th:href="@{/game/janken/cho(id=${enemyid})}">チョキ</a>
     <a th:href="@{/game/janken/pa(id=${enemyid})}">パー</a>
   </div>
 
-  <div th:if=${judge}>
-    勝敗<br />
-    [[${judge}]]
+  <h3 class="center">
+    <div th:if=${judge}>
+      勝敗<br />
+      [[${judge}]]
 
-    <a href="/game/nextgame">次へ</a>
-  </div>
+      <a href="/game/nextgame">次へ</a>
+    </div>
+  </h3>
 
 </body>
 
