@@ -29,6 +29,10 @@
       margin-right: auto;
       margin-left: auto;
     }
+
+    body {
+      background-color: darkslategrey;
+    }
   </style>
 </head>
 
@@ -46,7 +50,7 @@
 </div>
 
 <ul sec:authorize="hasRole('ROLE_USER')">
-  <li th:each="user : ${user}">
+  <b th:each="user : ${user}">
     <a th:if="${myid != user.id && user.id!=1}">
       <p class="center">
         <a th:href="@{/game/match(id=${user.id})}">
@@ -54,7 +58,7 @@
         </a>
       </p>
     </a>
-  </li>
+  </b>
 </ul>
 
 <a class="center">
@@ -62,11 +66,11 @@
 </a>
 
 <ul sec:authorize="hasRole('ROLE_USER')">
-  <li th:each="match : ${match_wait}">
+  <b th:each="match : ${match_wait}">
     <a th:href="@{/game/matchwait(id=${match})}">
       <p class="center">matchNo:[[${match}]]</p>
     </a>
-  </li>
+  </b>
 </ul>
 
 <table sec:authorize="hasRole('ROLE_MASTER')">

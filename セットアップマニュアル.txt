@@ -1,0 +1,20 @@
+セットアップマニュアル
+
+・sshで150.89.233.208にアクセスする
+
+コマンド：ssh isdev21@150.89.233.208
+pass:isDev21?208
+
+
+・サーバを停止させる
+　PID=$(cat pid.txt)
+　kill $PID
+
+・サーバの状態を更新する
+　git pull origin main
+　
+
+・サーバ起動
+　nohup bash ./gradlew bootrun > log.txt 2> errors.txt < /dev/null &
+　PID=$!
+　echo $PID > pid.txt

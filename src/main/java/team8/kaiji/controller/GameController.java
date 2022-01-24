@@ -470,6 +470,8 @@ public class GameController {
     model.addAttribute("chocnt", chocnt);
     model.addAttribute("pacnt", pacnt);
     model.addAttribute("starcnt", starcnt);
+
+    model.addAttribute("myid", userid);
     return "main.html";
   }
 
