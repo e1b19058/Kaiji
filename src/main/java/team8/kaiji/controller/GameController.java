@@ -472,6 +472,26 @@ public class GameController {
     model.addAttribute("starcnt", starcnt);
 
     model.addAttribute("myid", userid);
+
+    // gameEnd処理
+    String gameover = "Game Over";
+    String gameclear = "Game Clear";
+
+    int cardsum = gucnt + chocnt + pacnt;
+    if (starcnt == 0) {
+      model.addAttribute("gamejudge", gameover);
+      userMapper.deleteUserById(userid);
+      return "gameover.html";
+    } else if (cardsum == 0 && starcnt < 3) {
+      model.addAttribute("gamejudge", gameover);
+      userMapper.deleteUserById(userid);
+      return "gameover.html";
+    } else if (cardsum == 0 && starcnt >= 3) {
+      model.addAttribute("gamejudge", gameclear);
+      userMapper.deleteUserById(userid);
+      return "gameclear.html";
+    }
+    // gameEnd処理
     return "main.html";
   }
 
